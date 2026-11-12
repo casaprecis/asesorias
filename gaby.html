@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Agenda Gaby">
+<title>Agenda Gaby · Black Month</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Josefin+Sans:wght@600;700&family=Barlow+Condensed:wght@400;500;600&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+<style>
+.next{background:var(--brown);color:var(--paper2);border-radius:6px;padding:16px 18px;margin-bottom:14px}
+.next.alert{background:var(--red)}
+.next .t{font:700 24px "Josefin Sans";text-transform:uppercase}
+.next .c{font-size:18px}
+.row{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin-top:8px}
+.row.past{opacity:.55}
+.hr{font:700 20px "Josefin Sans";min-width:86px}
+.who{flex:1;min-width:0}.who b{display:block;font-size:18px;text-transform:uppercase}.who span{font-size:14px;color:var(--brown2)}
+.act{display:flex;flex-direction:column;gap:6px}
+.mini{border:0;border-radius:4px;padding:8px 12px;font:600 14px "Barlow Condensed";letter-spacing:.05em;text-transform:uppercase;background:#1f8f4e;color:#fff;text-decoration:none;text-align:center}
+.mini.cal{background:transparent;color:var(--brown);border:1px solid var(--brown)}
+.dh{font:700 16px "Josefin Sans";text-transform:uppercase;margin:20px 0 4px;color:var(--red)}
+.dup{color:var(--red);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hero"><div class="logo">Precis</div><div class="logo-sub">- casa -</div><div class="script">Agenda de Gaby</div><div class="bm-sub">Asesorías Black Month</div></div>
+<div id="login" class="card" style="margin-top:20px">
+<h2>Clave</h2><input id="pin" type="password" autocomplete="off"><div class="err" id="perr"></div>
+<button class="btn dark" id="enter">Entrar</button>
+</div>
+<div id="app" class="hide" style="margin-top:20px">
+<div id="next"></div>
+<button class="btn ghost" id="snd" style="margin:0 0 6px">Activar avisos con sonido</button>
+<div class="note" id="upd"></div>
+<div id="list"></div>
+</div>
+</div>
+<script>
+const PRIV={"s": "VkTThTcq5DCQQmr/Wor0uQ==", "i": "6jFGFas0rIztemR8", "c": "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"};
+const SHEET="14gf6cSbbr-HEQp1ey78rp1HEbYle8dmlMt3p8suv_m8";
+const $=s=>document.querySelector(s);
+const esc=s=>(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const DIAS=["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
+const ub=b=>Uint8Array.from(atob(b),c=>c.charCodeAt(0));
+const fmt12=(h,m)=>{const ap=h>=12?"p.m.":"a.m.";return (h%12||12)+":"+String(m).padStart(2,"0")+" "+ap;};
+const slotDate=k=>new Date(k.replace(" ","T")+":00-05:00");
+let key=null,items=[],cache={},audio=null,warned={};
+async function unlock(p){
+  const km=await crypto.subtle.importKey("raw",new TextEncoder().encode(p),"PBKDF2",false,["deriveKey"]);
+  const k=await crypto.subtle.deriveKey({name:"PBKDF2",salt:ub(PRIV.s),iterations:200000,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["decrypt"]);
+  const jwk=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:ub(PRIV.i)},k,ub(PRIV.c))));
+  return crypto.subtle.importKey("jwk",jwk,{name:"RSA-OAEP",hash:"SHA-256"},false,["decrypt"]);
+}
+async function go(p){
+  try{key=await unlock(p);}catch(e){$("#perr").textContent="Clave incorrecta.";return;}
+  try{localStorage.setItem("gpin",p);}catch(e){}
+  $("#login").classList.add("hide");$("#app").classList.remove("hide");load();setInterval(load,20000);setInterval(tick,15000);
+}
+$("#enter").onclick=()=>go($("#pin").value.trim());
+$("#pin").addEventListener("keydown",e=>{if(e.key==="Enter")go($("#pin").value.trim());});
+try{const s=localStorage.getItem("gpin");if(s)go(s);}catch(e){}
+function fetchRows(){
+  return new Promise(res=>{
+    const cb="__cb"+Date.now();const s=document.createElement("script");const t=setTimeout(()=>res(null),10000);
+    window[cb]=r=>{clearTimeout(t);delete window[cb];s.remove();res((r.table.rows||[]).map(x=>[x.c[0]&&(x.c[0].f||x.c[0].v),x.c[1]&&String(x.c[1].v).replace(/^s/,""),x.c[2]&&x.c[2].v]));};
+    s.onerror=()=>{clearTimeout(t);res(null);};
+    s.src="https://docs.google.com/spreadsheets/d/"+SHEET+"/gviz/tq?tqx=responseHandler:"+cb+"&headers=1&tq="+encodeURIComponent("select A,B,C")+"&_="+Date.now();
+    document.body.appendChild(s);
+  });
+}
+async function dec(d){
+  if(cache[d])return cache[d];
+  try{cache[d]=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:"RSA-OAEP"},key,ub(d))));}catch(e){cache[d]={n:"(dato ilegible)",w:"",e:""};}
+  return cache[d];
+}
+async function load(){
+  const rows=await fetchRows();
+  if(!rows){$("#upd").textContent="Sin conexión, reintentando…";return;}
+  const out=[];for(const [ts,k,d] of rows){if(!k||!d)continue;const p=await dec(d);out.push({k,ts,...p});}
+  out.sort((a,b)=>a.k.localeCompare(b.k));items=out;
+  $("#upd").textContent=out.length+" asesoría(s) agendada(s) · actualizado "+new Date().toLocaleTimeString("es-CO",{hour:"numeric",minute:"2-digit"});
+  render();tick();
+}
+function wa(x){const n=(x.w||"").replace(/\D/g,"");const txt="Hola "+x.n.split(" ")[0]+", soy Gaby de Casa Précis. Te escribo para tu asesoría de Black Month.";return "https://wa.me/"+n+"?text="+encodeURIComponent(txt);}
+function ics(x){
+  const d=slotDate(x.k);const z=t=>t.toISOString().replace(/[-:]/g,"").replace(/\.\d+/,"");const e=new Date(d.getTime()+15*60000);
+  const body=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//CasaPrecis//Agenda//ES","BEGIN:VEVENT","UID:"+x.k.replace(/\D/g,"")+"@casaprecis","DTSTAMP:"+z(new Date()),"DTSTART:"+z(d),"DTEND:"+z(e),"SUMMARY:Llamar a "+x.n+" (Black Month)","DESCRIPTION:WhatsApp "+(x.w||"")+"\\n"+wa(x),"BEGIN:VALARM","TRIGGER:-PT5M","ACTION:DISPLAY","DESCRIPTION:Asesoría en 5 minutos","END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");
+  return "data:text/calendar;charset=utf-8,"+encodeURIComponent(body);
+}
+function render(){
+  const now=Date.now();const count={};items.forEach(x=>count[x.k]=(count[x.k]||0)+1);
+  let html="",last="";
+  const up=items.filter(x=>slotDate(x.k).getTime()+15*60000>now),past=items.filter(x=>slotDate(x.k).getTime()+15*60000<=now);
+  const row=(x,isPast)=>{const [h,m]=x.k.slice(11).split(":").map(Number);
+    return '<div class="row'+(isPast?" past":"")+'"><div class="hr">'+fmt12(h,m)+'</div><div class="who"><b>'+esc(x.n)+'</b><span>'+esc(x.w)+(x.e?" · "+esc(x.e):"")+'</span>'+(count[x.k]>1?'<div class="dup">Hora repetida: escríbele para moverla</div>':"")+'</div><div class="act"><a class="mini" href="'+wa(x)+'" target="_blank" rel="noopener">WhatsApp</a>'+(isPast?"":'<a class="mini cal" href="'+ics(x)+'" download="asesoria-'+x.k.replace(/\D/g,"")+'.ics">Alarma</a>')+'</div></div>';};
+  for(const x of up){const d=x.k.slice(0,10);if(d!==last){const dt=slotDate(x.k);html+='<div class="dh">'+DIAS[dt.getUTCDay()===0?0:new Date(d+"T12:00:00-05:00").getUTCDay()]+" "+(+d.slice(8))+" de noviembre</div>";last=d;}html+=row(x,false);}
+  if(!up.length)html+='<div class="card note">Todavía no hay asesorías próximas.</div>';
+  if(past.length){html+='<div class="dh" style="color:var(--muted)">Ya pasaron</div>'+past.slice().reverse().map(x=>row(x,true)).join("");}
+  $("#list").innerHTML=html;
+}
+function tick(){
+  const now=Date.now();const n=items.find(x=>slotDate(x.k).getTime()+15*60000>now);const box=$("#next");
+  if(!n){box.innerHTML="";return;}
+  const mins=Math.round((slotDate(n.k).getTime()-now)/60000);const [h,m]=n.k.slice(11).split(":").map(Number);
+  const when=mins<=0?"¡Es ahora!":mins<60?"en "+mins+" min":"el "+(+n.k.slice(8,10))+" nov a las "+fmt12(h,m);
+  box.innerHTML='<div class="next'+(mins<=5?" alert":"")+'"><div class="c">Próxima llamada '+when+'</div><div class="t">'+esc(n.n)+'</div><div class="c">'+fmt12(h,m)+' · '+esc(n.w)+'</div><a class="btn" style="background:#1f8f4e;margin-top:10px" href="'+wa(n)+'" target="_blank" rel="noopener">Abrir WhatsApp</a></div>';
+  if(mins<=5&&mins>=-2&&!warned[n.k]){warned[n.k]=1;beep();try{if(window.Notification&&Notification.permission==="granted")new Notification("Asesoría en "+Math.max(mins,0)+" min",{body:n.n+" · "+n.w});}catch(e){}if(navigator.vibrate)navigator.vibrate([300,150,300]);}
+}
+function beep(){if(!audio)return;const o=audio.createOscillator(),g=audio.createGain();o.frequency.value=880;o.connect(g);g.connect(audio.destination);g.gain.setValueAtTime(.3,audio.currentTime);o.start();o.stop(audio.currentTime+.6);}
+$("#snd").onclick=()=>{try{audio=new (window.AudioContext||window.webkitAudioContext)();beep();}catch(e){}try{if(window.Notification)Notification.requestPermission();}catch(e){}$("#snd").textContent="Avisos activados";$("#snd").disabled=true;};
+</script>
+</body>
+</html>
