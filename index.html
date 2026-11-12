@@ -18,43 +18,38 @@
 <div class="script">Asesoría virtual</div>
 </div>
 <p class="lead">Agenda una asesoría personalizada por WhatsApp con Gaby, nuestra Web Manager.</p>
-<div id="paso1" class="card">
-<h2><span>1.</span> Busca tu nombre</h2>
-<input id="q" placeholder="Escribe tu nombre o apellido" autocomplete="off">
-<div id="res"></div>
-<div class="note">Si no apareces, escríbenos por WhatsApp y te ayudamos.</div>
-</div>
-<div id="paso2" class="card hide">
-<h2><span>2.</span> Escoge día y hora</h2>
-<div class="note" id="hola"></div>
+<div id="paso2" class="card">
+<h2><span>1.</span> Escoge día y hora</h2>
 <div class="chips" id="days"></div>
 <div class="slots" id="slots"></div>
 <div class="note" id="tz"></div>
 </div>
 <div id="paso3" class="card hide">
-<h2><span>3.</span> Confirma tus datos</h2>
+<h2><span>2.</span> Tus datos</h2>
 <div class="note" id="resumen"></div>
+<label>Nombre y apellido</label><input id="nom" autocomplete="name">
 <label>WhatsApp (con indicativo del país)</label><input id="wa" inputmode="tel" placeholder="+507 6000 0000" autocomplete="tel">
 <label>Correo (opcional)</label><input id="mail" inputmode="email" autocomplete="email">
 <div class="err" id="err"></div>
 <button class="btn" id="go">Agendar mi asesoría</button>
+<p class="note" style="text-align:center">*Aplican términos y condiciones.</p>
 </div>
 <div id="ok" class="card ok hide">
 <div class="script">¡Te esperamos!</div>
 <div class="big" id="okTxt"></div>
 <p class="note" id="okSub"></p>
 <p class="note">Gaby te llamará por WhatsApp a esa hora. Si necesitas cambiarla, escríbenos.</p>
+<p class="note">*Aplican términos y condiciones.</p>
 </div>
 </div>
 <script>
-const NOMBRES=["Maria Alexandra Mendoza", "Karen Miller", "Monalisa Icasa", "Luisana Hernandez", "Valeria Berganza", "Daniel Bettsack", "Gisel Del Carmen Mendez", "Susana Reyes", "Tatiana Bernal", "Katia Mejia", "Spaggiari Reverberri Gabriele", "Yumana Issa", "Alida Garcia", "Marissa Garcia De Paredes", "Maria Isabel Navarro", "Alyssa Lince", "Sarybel Campos", "Kodat Duque De Bazan Maria Isabel", "Dennice Sanhueza", "Yamani Limberopolus", "Daniela Reyes", "Vanessa Roa", "Sofia Roux", "Lopez Espinoza Ana", "Alexandra Sheldon", "Maria Elena Duran", "Liliana Arrue", "Fiorella Castro", "Herrero Chacon Gina Elizabeth", "Vanessa Humbert", "Michelle Cera", "Alexandra Gonzales", "Carbonell Perez Solangie Del Pilar", "Leo Cohen", "Irene Cuevas", "Ana Sosa", "Mahiba Issa", "Ana Montenegro", "Mackay Rumia Antoinette", "Porras Valencia Claudia Andrea", "Maria Cabrera", "Alysar Farhat", "Jose Bern", "Lillian Alfaro", "Patricia Abbo", "Rosa La Spisa", "Heidi Collins", "Ana Teresa De La Guardia", "Daniela Viteri", "Doris Gonzales", "Marisol Martinez", "Cynthia Barreto", "Caitlin Sanford", "Glori Setton", "Monica Obando", "Watson De Duran Analida", "Silvia Schloser", "Simons Melo Anna Lisa", "Dominique Pollach", "Laura Daniela Torres", "Sasso Daniela", "Lisa Vargas", "Moreno Laura", "Sanchez Varon Claudia", "Morales Doris", "Parada Maricela", "Kunkle Laura", "Dayan Hildy", "Molina Moreno Diana Patrica", "Leañez Villafañe Marisay Del Valle", "Ochmann Monica", "Salasar Maria Cristina", "Ocampo Nadia", "Vargas Chassel", "Medina Maria Clara", "Pastrana Gloria Marleny", "De Arco De Luca Iris", "Dálessandro Isabella", "Kumar María Teresa", "Trimbach Nathan Gerald", "Yvette Woldenberg", "Ekhlaghy Susana", "Molina Morales Daniel", "Machado Carolina", "Dayan Paula", "Vlachos Dionysios", "Payro Maria", "Rassi Stella Nicole", "Dedet Gil Josefina Isabel", "Piad Herbruger Michelle", "Bates Catherine", "Conde Gustavo", "Yunen Mirna", "Rodriguez Alejandra", "Joseph Mariah", "Boyd Mercedes", "Mendez Elena", "Sainz De La Via Alejandra", "Boda Ratna Reddy", "Zaver Shaila", "Santana Izzo Maria Paulina", "Macia Ivhana", "Quintanilla Patricia", "De Los Rios Perez Marcia Valeria", "Gomez Ana", "Lipton Jordan Lawrence", "Yamasaki Victoria", "Saad Francis Dominique", "Afshari Mahsa", "Arias Cecilia", "Barrios Vivian", "Emiliani Ximena", "Athanasopulos Athanasia", "Fohr Amy Ferguson", "Sidat Yasmin", "Lopez Adriana", "Haubert Michaela", "Mejia Gilda", "Menendez Laura", "Wright Melissa", "Rosenitsch Sabriana", "Castillo Miguel", "Hannah Patrick", "Rosalo Carolina Maria", "Diaz Andrea", "Maduro De Abadi Arianna", "Venegaz Martinez Carolina Beatriz", "Cantu Salas Gabriela Yalitze", "Peña Patricia"];
 const PUB={"n": "3nTvDfcmHLSRTP6QgdM38XSKCP304xvK3PNGSQ0-3Ldi1jhdnLzfw_kMKMM99k0xq9kjJ7fngHrkMmvWztOcIBMQrC8rlZsyEfwMK4EDGAAXlmU2YrYJZjdO89RmNG1bMkaCJ8UGiZtVFubT-WL8rBfKTxcVXr_2aTS8yzpLQT337CU5fQW97Wb_hSxWlsQi28zcHLVb2l3mFVMMFTyn2aXsumJS-KBkY3YhHBESyWkOG8_IlRrCTvk-tz15c8Xh4qvvdr_rsknX6c5OQ6q-KK8ehWji-sehFhg9Iwgk--PswAEXTauRC4kW9FbcK5QgP00m2ydNZkSa1yHYDLrBvQ", "e": "AQAB"};
 const GF="https://docs.google.com/forms/d/e/1FAIpQLSdv3gMuH7Vc2hRWfoq6uCxo3v7aXOuf5qLXXB5ZpuTgFt3RsA/formResponse";
 const SHEET="14gf6cSbbr-HEQp1ey78rp1HEbYle8dmlMt3p8suv_m8";
 const $=s=>document.querySelector(s);
 const norm=s=>(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().trim();
 const esc=s=>(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let who=-1,day="",slot="",taken=new Set();
+let day="",slot="",taken=new Set();
 const DIAS=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
 const fmt12=(h,m)=>{const ap=h>=12?"p.m.":"a.m.";const hh=h%12||12;return hh+":"+String(m).padStart(2,"0")+" "+ap;};
 function slotDate(k){return new Date(k.replace(" ","T")+":00-05:00");}
@@ -78,19 +73,6 @@ function loadTaken(){
     document.body.appendChild(s);
   });
 }
-$("#q").addEventListener("input",()=>{
-  const q=norm($("#q").value);const r=$("#res");
-  if(q.length<3){r.innerHTML="";return;}
-  const parts=q.split(/\s+/);
-  const m=NOMBRES.map((n,i)=>[n,i]).filter(([n])=>parts.every(p=>norm(n).includes(p))).slice(0,8);
-  r.innerHTML=m.length?m.map(([n,i])=>'<button class="opt" data-i="'+i+'">'+esc(n)+'</button>').join(""):'<div class="note">No encontramos ese nombre. Prueba solo con tu apellido.</div>';
-});
-$("#res").addEventListener("click",async e=>{
-  const b=e.target.closest(".opt");if(!b)return;who=+b.dataset.i;
-  $("#paso1").classList.add("hide");$("#paso2").classList.remove("hide");
-  $("#hola").textContent="Hola, "+NOMBRES[who].split(" ")[0]+". Estas son las horas disponibles.";
-  await loadTaken();renderDays();
-});
 function renderDays(){
   const ds=allDays();if(!day&&ds.length)day=ds[0].ds;
   $("#days").innerHTML=ds.map(x=>'<button class="chip'+(x.ds===day?" on":"")+'" data-d="'+x.ds+'">'+DIAS[x.w]+" "+x.d+" nov</button>").join("");
@@ -106,7 +88,8 @@ $("#slots").addEventListener("click",e=>{const b=e.target.closest(".slot");if(!b
   $("#resumen").textContent=DIAS[d.getUTCDay()]+" "+(+slot.slice(8,10))+" de noviembre, "+fmt12(h,m)+" (hora Colombia)";
   $("#paso3").classList.remove("hide");$("#paso3").scrollIntoView({behavior:"smooth"});});
 $("#go").onclick=async()=>{
-  const wa=$("#wa").value.trim(),mail=$("#mail").value.trim();const e=$("#err");
+  const nom=$("#nom").value.trim(),wa=$("#wa").value.trim(),mail=$("#mail").value.trim();const e=$("#err");
+  if(nom.length<3){e.textContent="Escribe tu nombre y apellido.";return;}
   if(wa.replace(/\D/g,"").length<8){e.textContent="Escribe tu WhatsApp con el indicativo del país.";return;}
   if(!slot){e.textContent="Escoge una hora.";return;}
   const btn=$("#go");btn.disabled=true;btn.textContent="Agendando…";e.textContent="";
@@ -114,7 +97,8 @@ $("#go").onclick=async()=>{
   if(taken.has(slot)){e.textContent="Esa hora la acaban de tomar. Escoge otra, por favor.";slot="";renderDays();btn.disabled=false;btn.textContent="Agendar mi asesoría";return;}
   try{
     const key=await crypto.subtle.importKey("jwk",{kty:"RSA",n:PUB.n,e:PUB.e,alg:"RSA-OAEP-256",ext:true},{name:"RSA-OAEP",hash:"SHA-256"},false,["encrypt"]);
-    const pt=new TextEncoder().encode(JSON.stringify({n:NOMBRES[who].slice(0,45),w:wa.slice(0,25),e:mail.slice(0,50)}));
+    let o={n:nom.slice(0,45),w:wa.slice(0,25),e:mail.slice(0,50)},pt=new TextEncoder().encode(JSON.stringify(o));
+    while(pt.length>180){if(o.e)o.e=o.e.slice(0,-5);else o.n=o.n.slice(0,-3);pt=new TextEncoder().encode(JSON.stringify(o));}
     const ct=new Uint8Array(await crypto.subtle.encrypt({name:"RSA-OAEP"},key,pt));
     const dato=btoa(String.fromCharCode(...ct));
     const body=new URLSearchParams();body.append("entry.2097280107","s"+slot);body.append("entry.1268064680",dato);
@@ -125,6 +109,7 @@ $("#go").onclick=async()=>{
     window.scrollTo(0,0);
   }catch(err){e.textContent="No se pudo agendar. Revisa tu conexión e intenta de nuevo.";btn.disabled=false;btn.textContent="Agendar mi asesoría";}
 };
+loadTaken().then(renderDays);renderDays();
 </script>
 </body>
 </html>
