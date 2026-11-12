@@ -55,7 +55,7 @@ const fmt12=(h,m)=>{const ap=h>=12?"p.m.":"a.m.";const hh=h%12||12;return hh+":"
 function slotDate(k){return new Date(k.replace(" ","T")+":00-05:00");}
 function allDays(){
   const out=[];const now=Date.now();
-  for(let d=13;d<=30;d++){
+  for(let d=12;d<=30;d++){
     const ds="2026-11-"+String(d).padStart(2,"0");const dt=new Date(ds+"T12:00:00-05:00");const w=dt.getUTCDay();
     if(w===0||w===6)continue;
     const sl=[];for(let h=11;h<16;h++)for(let m=0;m<60;m+=15){const k=ds+" "+String(h).padStart(2,"0")+":"+String(m).padStart(2,"0");if(slotDate(k).getTime()>now+30*60000)sl.push(k);}
