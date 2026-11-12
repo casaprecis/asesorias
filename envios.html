@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Envíos internacionales · Black Month</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Josefin+Sans:wght@600;700&family=Barlow+Condensed:wght@400;500;600&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+<style>
+.row{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:11px 13px;margin-top:8px}
+.row.sent{opacity:.5}
+.who{flex:1;min-width:0}.who b{display:block;font-size:17px;text-transform:uppercase}.who span{font-size:14px;color:var(--brown2);word-break:break-all}
+.act{display:flex;flex-direction:column;gap:6px;align-items:stretch}
+.mini{border:0;border-radius:4px;padding:8px 12px;font:600 14px "Barlow Condensed";letter-spacing:.05em;text-transform:uppercase;background:#1f8f4e;color:#fff;text-decoration:none;text-align:center;white-space:nowrap}
+.mini.mail{background:var(--brown)}
+.chk{font-size:14px;display:flex;gap:5px;align-items:center;justify-content:center}
+.stat{display:flex;gap:8px;margin:10px 0}.stat div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:6px;text-align:center;padding:8px}.stat b{display:block;font:700 26px "Josefin Sans"}
+.steps{font-size:16px;margin:0;padding-left:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hero"><div class="logo">Precis</div><div class="logo-sub">- casa -</div><div class="script">Envíos internacionales</div><div class="bm-sub">Invitación asesoría Black Month</div></div>
+<div id="login" class="card" style="margin-top:20px">
+<h2>Clave</h2><input id="pin" type="password" autocomplete="off"><div class="err" id="perr"></div>
+<button class="btn dark" id="enter">Entrar</button>
+</div>
+<div id="app" class="hide" style="margin-top:20px">
+<div class="card"><ol class="steps">
+<li>Toca <b>WhatsApp</b>: se abre el chat de la clienta con el mensaje ya escrito.</li>
+<li>Adjunta la foto de la invitación y envía.</li>
+<li>Vuelve aquí y marca <b>Enviado</b>.</li>
+</ol><div class="note">Las que no tienen celular tienen el botón <b>Correo</b>.</div></div>
+<div class="stat"><div><b id="sT">0</b>Clientas</div><div><b id="sS">0</b>Enviados</div><div><b id="sP">0</b>Faltan</div></div>
+<input id="q" placeholder="Buscar por nombre o país" autocomplete="off">
+<div class="chips" style="margin-top:10px"><button class="chip on" data-f="pend">Faltan</button><button class="chip" data-f="all">Todas</button><button class="chip" data-f="sent">Enviados</button></div>
+<button class="btn ghost" id="copy" style="margin-top:12px">Copiar el mensaje</button>
+<div id="list"></div>
+</div>
+</div>
+<script>
+const D={"s": "yL/280ExJoYNXFbM1PprOA==", "i": "pz+E2cI2CZvZET3m", "c": "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"};
+const MSG="✨ *¡BLACK MONTH TAMBIÉN ES PARA TI!*\n\nSabemos que muchas de nuestras clientas están lejos de Casa, pero eso no significa que tengan que perderse sus piezas favoritas del diseño colombiano. 🤍\n\nDurante nuestro Black Month preparamos una experiencia de compra personalizada para quienes nos acompañan desde otros países.\n\nTe invitamos a una *asesoría personalizada por WhatsApp* con Gaby, nuestra Web Manager. Ella te acompañará a descubrir nuestras marcas, explorar las piezas disponibles y encontrar tus favoritas con los beneficios especiales de Black Month.\n\n📅 Escoge aquí el día y la hora que mejor te queden:\nhttps://casaprecis.github.io/asesorias/\n\nPorque no importa dónde estés, queremos que sigas sintiéndote parte de Casa Précis.\n\n¡Nos encantará verte, aunque sea a la distancia! 🤍\n\n*Aplican términos y condiciones.";
+const $=s=>document.querySelector(s);
+const esc=s=>(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm=s=>(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+const ub=b=>Uint8Array.from(atob(b),c=>c.charCodeAt(0));
+let L=[],sent={},filter="pend";
+try{sent=JSON.parse(localStorage.getItem("envios_bm")||"{}");}catch(e){}
+async function open(p){
+  try{
+    const km=await crypto.subtle.importKey("raw",new TextEncoder().encode(p),"PBKDF2",false,["deriveKey"]);
+    const k=await crypto.subtle.deriveKey({name:"PBKDF2",salt:ub(D.s),iterations:200000,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["decrypt"]);
+    const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:ub(D.i)},k,ub(D.c));
+    L=JSON.parse(await new Response(new Blob([pt]).stream().pipeThrough(new DecompressionStream("gzip"))).text());
+  }catch(e){$("#perr").textContent="Clave incorrecta.";return;}
+  try{localStorage.setItem("epin",p);}catch(e){}
+  $("#login").classList.add("hide");$("#app").classList.remove("hide");render();
+}
+$("#enter").onclick=()=>open($("#pin").value.trim());
+$("#pin").addEventListener("keydown",e=>{if(e.key==="Enter")open($("#pin").value.trim());});
+try{const s=localStorage.getItem("epin");if(s)open(s);}catch(e){}
+const wa=x=>"https://wa.me/"+x.w.replace(/\D/g,"")+"?text="+encodeURIComponent(MSG);
+const mail=x=>"mailto:"+x.e+"?subject="+encodeURIComponent("Black Month también es para ti · Casa Précis")+"&body="+encodeURIComponent(MSG.replace(/\*/g,""));
+function render(){
+  const q=norm($("#q").value);const keyOf=x=>x.n+"|"+(x.w||x.e);
+  const ns=L.filter(x=>sent[keyOf(x)]).length;$("#sT").textContent=L.length;$("#sS").textContent=ns;$("#sP").textContent=L.length-ns;
+  const rows=L.filter(x=>(filter==="all"||(filter==="sent")===!!sent[keyOf(x)])&&(!q||norm(x.n+" "+x.c).includes(q)));
+  $("#list").innerHTML=rows.map(x=>{const k=keyOf(x);
+    const btn=x.w?'<a class="mini" href="'+wa(x)+'" target="_blank" rel="noopener">WhatsApp</a>':x.e?'<a class="mini mail" href="'+mail(x)+'">Correo</a>':'<span class="note">Sin contacto</span>';
+    return '<div class="row'+(sent[k]?" sent":"")+'"><div class="who"><b>'+esc(x.n)+'</b><span>'+esc(x.c)+' · '+esc(x.w||x.e||"sin datos")+'</span></div><div class="act">'+btn+'<label class="chk"><input type="checkbox" data-k="'+esc(k)+'"'+(sent[k]?" checked":"")+' style="width:auto"> Enviado</label></div></div>';}).join("")||'<div class="card note" style="margin-top:10px">No hay clientas en esta lista.</div>';
+}
+$("#list").addEventListener("change",e=>{const k=e.target.dataset.k;if(!k)return;if(e.target.checked)sent[k]=Date.now();else delete sent[k];try{localStorage.setItem("envios_bm",JSON.stringify(sent));}catch(er){}render();});
+$("#q").addEventListener("input",render);
+document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;document.querySelectorAll("[data-f]").forEach(x=>x.classList.toggle("on",x===b));render();});
+$("#copy").onclick=async()=>{try{await navigator.clipboard.writeText(MSG);$("#copy").textContent="Mensaje copiado";}catch(e){$("#copy").textContent="No se pudo copiar";}setTimeout(()=>$("#copy").textContent="Copiar el mensaje",2000);};
+</script>
+</body>
+</html>
